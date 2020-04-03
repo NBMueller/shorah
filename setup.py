@@ -13,14 +13,15 @@ from setuptools.command.install import install
 
 def move_files():
     """Identify the build directory and copy executables into src/shorah."""
-    try:
-        diri_file = glob.glob('*/src/cpp/diri_sampler')[0]
-    except IndexError:
-        sys.exit('No executable diri_sampler found. Build first.')
-    exe_dir = os.path.dirname(diri_file)
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    bin_dir = os.path.join(base_dir, 'bin')
+    diri_exe = os.path.join(bin_dir, 'diri_sampler')
+    
     for exe in ['b2w', 'diri_sampler', 'fil']:
-        shu = shutil.copy('%s/%s' % (exe_dir, exe), 'src/shorah/bin')
-        print(shu)
+        exe_file = os.path.join(bin_dir, exe)
+        if not os.path.exists(exe_file):
+            sys.exit(f'No executable {exe} found in {bin_dir}. Build first.')
+        shu = shutil.copy(exe_file, 'src/shorah/bin')
 
 
 class CustomDevelop(develop):
@@ -72,9 +73,7 @@ setup(
     url='http://github.com/cbg-ethz/shorah',
     packages=find_packages('src'),  # include all packages under src
     package_dir={'': 'src'},  # tell setuptools packages are under src
-    entry_points={
-        'console_scripts': ['shorah = shorah.cli:main']
-    },
+    entry_points={'console_scripts': ['shorah = shorah.cli:main']},
     license='GPL 3.0',
     long_description='''
     ShoRAH is designed to analyse genetically heterogeneous samples. It provides error correction,

@@ -446,7 +446,7 @@ def main(args):
             f'##reference={args.f}'
         ]
         for ref_name, ref_seq in ref_m.items():
-            VCF_meta.append(f'##contig=<ID={ref_name},length={len(ref_seq)}>',)
+            VCF_meta.append(f'##contig=<ID={ref_name},length={len(ref_seq)}>')
         VCF_meta.extend([
             '##INFO=<ID=Fvar,Number=1,Type=Integer,Description="Number of forward reads with variant">',
             '##INFO=<ID=Rvar,Number=1,Type=Integer,Description="Number of reverse reads with variant">',
